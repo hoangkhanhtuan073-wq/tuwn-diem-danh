@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ONTOP - E39 · Điểm danh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --fg-main: #141a24;
+      --fg-muted: #4f5a6a;
+      --fg-subtle: #6b7686;
+      --border-light: #e2e8f0;
+      --accent-blue: #006efb;
+      --accent-badge-text: #0047e0;
+      --accent-soft: #eef5ff;
+      --success-dot: #10b981;
+      --brand-gradient: linear-gradient(90deg, #003cff 0%, #006efb 52%, #00b4ff 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--fg-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Thanh gradient xanh cao 6px sát mép trên */
+    .top-bar {
+      width: 100%;
+      height: 6px;
+      background: var(--brand-gradient);
+      flex-shrink: 0;
+    }
+
+    /* Header */
+    .header {
+      width: 100%;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    @media (min-width: 640px) {
+      .brand-logo {
+        height: 41px;
+        width: auto;
+      }
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 32px;
+      min-width: 106.13px;
+      padding: 0 12px;
+      border-radius: 9999px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-light);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--fg-muted);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background-color: var(--success-dot);
+      flex-shrink: 0;
+    }
+
+    /* Khu vực nội dung chính */
+    .main-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 24px 32px;
+    }
+
+    .card-wrapper {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .card {
+      width: 100%;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 40px 48px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+    }
+
+    .top-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .checkin-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 32px;
+      min-width: 117.08px;
+      padding: 0 16px;
+      border-radius: 9999px;
+      background-color: var(--accent-soft);
+      color: var(--accent-badge-text);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .checkin-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background-color: var(--accent-blue);
+      flex-shrink: 0;
+    }
+
+    .title-e39 {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.25;
+      white-space: nowrap;
+      color: var(--fg-main);
+    }
+
+    .title-dot {
+      color: var(--fg-subtle);
+      font-weight: 500;
+      margin: 0 4px;
+    }
+
+    .title-code {
+      color: var(--accent-blue);
+    }
+
+    /* Đồng hồ số */
+    .timer-row {
+      margin-top: 32px;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .clock-num {
+      font-size: 144px;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .clock-colon {
+      font-size: 124px;
+      line-height: 1;
+      color: #cbd5e1;
+      margin: 0 14px;
+      transform: translateY(-10px);
+      transition: opacity 0.25s ease;
+    }
+
+    .clock-colon.is-hidden {
+      opacity: 0.15;
+    }
+
+    .clock-sec {
+      font-size: 56px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--fg-subtle);
+      margin-left: 16px;
+    }
+
+    /* Thứ & Ngày */
+    .date-block {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .weekday-text {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--fg-main);
+      text-transform: capitalize;
+    }
+
+    .date-text {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--fg-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Đường phân cách */
+    .card-divider {
+      margin-top: 32px;
+      height: 1px;
+      width: 100%;
+      background-color: var(--border-light);
+    }
+
+    /* Đồng hồ kim 12 vạch */
+    .clock-footer {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .analog-dial {
+      position: relative;
+      width: 131.86px;
+      height: 131.86px;
+      flex-shrink: 0;
+      border-radius: 9999px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-light);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    .tick-slot {
+      position: absolute;
+      inset: 0;
+    }
+
+    .tick-major {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 10px;
+      border-radius: 9999px;
+      background-color: var(--fg-main);
+    }
+
+    .tick-minor {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 6px;
+      border-radius: 9999px;
+      background-color: #cbd5e1;
+    }
+
+    .hand-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hour-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3.5px;
+      height: 28%;
+      border-radius: 9999px;
+      background-color: var(--fg-main);
+    }
+
+    .minute-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1.5px;
+      height: 38%;
+      border-radius: 9999px;
+      background-color: var(--fg-muted);
+    }
+
+    .second-hand {
+      position: absolute;
+      bottom: 42%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0.65px;
+      height: 48%;
+      background-color: var(--accent-blue);
+    }
+
+    .center-pin {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px var(--bg-card);
+    }
+
+    .tz-text {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 19.5px;
+      color: var(--fg-subtle);
+    }
+
+    @media (max-width: 640px) {
+      .header {
+        padding: 14px 16px;
+      }
+      .card {
+        padding: 24px 18px;
+      }
+      .title-e39 {
+        font-size: 28px;
+      }
+      .clock-num {
+        font-size: 88px;
+      }
+      .clock-colon {
+        font-size: 74px;
+        margin: 0 8px;
+        transform: translateY(-5px);
+      }
+      .clock-sec {
+        font-size: 32px;
+        margin-left: 10px;
+      }
+      .weekday-text {
+        font-size: 34px;
+      }
+      .date-text {
+        font-size: 26px;
+      }
+      .analog-dial {
+        width: 112px;
+        height: 112px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top-bar" aria-hidden="true"></div>
+
+    <header class="header">
+      <img
+        src="https://i.postimg.cc/x1dLMN1f/ontop-logo-640.png"
+        alt="ONTOP"
+        width="640"
+        height="234"
+        class="brand-logo"
+      />
+      <div class="status-badge">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Giờ chuẩn</span>
+      </div>
+    </header>
+
+    <section class="main-section">
+      <div class="card-wrapper">
+        <div class="card">
+          <div class="top-meta">
+            <span class="checkin-pill">
+              <span class="checkin-dot" aria-hidden="true"></span>
+              <span>Điểm danh</span>
+            </span>
+            <h1 class="title-e39">
+              ONTOP <span class="title-dot">·</span> <span class="title-code">E39</span>
+            </h1>
+          </div>
+
+          <div id="timerDisplay" class="timer-row" role="timer" aria-live="off">
+            <span id="hoursText" class="clock-num">11</span>
+            <span id="colonBlink" class="clock-colon" aria-hidden="true">:</span>
+            <span id="minutesText" class="clock-num">43</span>
+            <span id="secondsText" class="clock-sec">00</span>
+          </div>
+
+          <div class="date-block">
+            <p id="weekdayText" class="weekday-text">Thứ Ba</p>
+            <p id="dateText" class="date-text">24/11/2026</p>
+          </div>
+
+          <div class="card-divider"></div>
+
+          <div class="clock-footer">
+            <div class="analog-dial" aria-hidden="true">
+              <span class="tick-slot" style="transform: rotate(0deg);"><span class="tick-major"></span></span>
+              <span class="tick-slot" style="transform: rotate(30deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(60deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(90deg);"><span class="tick-major"></span></span>
+              <span class="tick-slot" style="transform: rotate(120deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(150deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(180deg);"><span class="tick-major"></span></span>
+              <span class="tick-slot" style="transform: rotate(210deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(240deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(270deg);"><span class="tick-major"></span></span>
+              <span class="tick-slot" style="transform: rotate(300deg);"><span class="tick-minor"></span></span>
+              <span class="tick-slot" style="transform: rotate(330deg);"><span class="tick-minor"></span></span>
+
+              <span id="hourHand" class="hand-layer"><span class="hour-hand"></span></span>
+              <span id="minuteHand" class="hand-layer"><span class="minute-hand"></span></span>
+              <span id="secondHand" class="hand-layer"><span class="second-hand"></span></span>
+
+              <span class="center-pin"></span>
+            </div>
+            <span class="tz-text">GMT+7 · Giờ Việt Nam</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const WEEKDAYS_VI = [
+      'Chủ Nhật',
+      'Thứ Hai',
+      'Thứ Ba',
+      'Thứ Tư',
+      'Thứ Năm',
+      'Thứ Sáu',
+      'Thứ Bảy'
+    ];
+
+    const hoursEl = document.getElementById('hoursText');
+    const minutesEl = document.getElementById('minutesText');
+    const secondsEl = document.getElementById('secondsText');
+    const colonEl = document.getElementById('colonBlink');
+    const weekdayEl = document.getElementById('weekdayText');
+    const dateEl = document.getElementById('dateText');
+    const timerEl = document.getElementById('timerDisplay');
+
+    const hourHandEl = document.getElementById('hourHand');
+    const minuteHandEl = document.getElementById('minuteHand');
+    const secondHandEl = document.getElementById('secondHand');
+
+    function pad2(n) {
+      return String(n).padStart(2, '0');
+    }
+
+    function getVNTime() {
+      const now = new Date();
+      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+      return new Date(utcMs + 7 * 3600000);
+    }
+
+    function renderClock() {
+      const vn = getVNTime();
+      const h = vn.getHours();
+      const m = vn.getMinutes();
+      const s = vn.getSeconds();
+      const ms = vn.getMilliseconds();
+
+      const hh = pad2(h);
+      const mm = pad2(m);
+      const ss = pad2(s);
+
+      hoursEl.textContent = hh;
+      minutesEl.textContent = mm;
+      secondsEl.textContent = ss;
+      timerEl.setAttribute('aria-label', `${hh}:${mm}:${ss}`);
+
+      if (ms >= 500) {
+        colonEl.classList.add('is-hidden');
+      } else {
+        colonEl.classList.remove('is-hidden');
+      }
+
+      weekdayEl.textContent = WEEKDAYS_VI[vn.getDay()];
+      dateEl.textContent = `${pad2(vn.getDate())}/${pad2(vn.getMonth() + 1)}/${vn.getFullYear()}`;
+
+      const secDeg = (s + ms / 1000) * 6;
+      const minDeg = (m + s / 60) * 6;
+      const hrDeg = ((h % 12) + m / 60 + s / 3600) * 30;
+
+      hourHandEl.style.transform = `rotate(${hrDeg}deg)`;
+      minuteHandEl.style.transform = `rotate(${minDeg}deg)`;
+      secondHandEl.style.transform = `rotate(${secDeg}deg)`;
+
+      requestAnimationFrame(renderClock);
+    }
+
+    requestAnimationFrame(renderClock);
+  </script>
+</body>
+</html>
