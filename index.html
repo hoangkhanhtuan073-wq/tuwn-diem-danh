@@ -417,13 +417,13 @@
           <div id="timerDisplay" class="timer-row" role="timer" aria-live="off">
             <span id="hoursText" class="clock-num">11</span>
             <span id="colonBlink" class="clock-colon" aria-hidden="true">:</span>
-            <span id="minutesText" class="clock-num">43</span>
+            <span id="minutesText" class="clock-num">45</span>
             <span id="secondsText" class="clock-sec">00</span>
           </div>
 
           <div class="date-block">
-            <p id="weekdayText" class="weekday-text">Thứ Ba</p>
-            <p id="dateText" class="date-text">24/11/2026</p>
+            <p id="weekdayText" class="weekday-text">Thứ Bảy</p>
+            <p id="dateText" class="date-text">28/11/2026</p>
           </div>
 
           <div class="card-divider"></div>
@@ -479,22 +479,49 @@
     const minuteHandEl = document.getElementById('minuteHand');
     const secondHandEl = document.getElementById('secondHand');
 
+    const TARGET_START = new Date('2026-11-28T11:45:00+07:00');
+    const PAGE_OPEN_MS = Date.now();
+
+    const vnFormatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      weekday: 'short',
+      hour12: false
+    });
+
+    const dayMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
     function pad2(n) {
       return String(n).padStart(2, '0');
     }
 
-    function getVNTime() {
-      const now = new Date();
-      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-      return new Date(utcMs + 7 * 3600000);
+    function getCustomVNTime() {
+      const elapsedMs = Date.now() - PAGE_OPEN_MS;
+      const currentMs = TARGET_START.getTime() + elapsedMs;
+      const parts = vnFormatter.formatToParts(new Date(currentMs));
+      const map = Object.fromEntries(parts.map(p => [p.type, p.value]));
+      const ms = ((currentMs % 1000) + 1000) % 1000;
+      return {
+        hours: Number(map.hour),
+        minutes: Number(map.minute),
+        seconds: Number(map.second),
+        ms,
+        day: dayMap[map.weekday],
+        dateStr: `${map.day}/${map.month}/${map.year}`
+      };
     }
 
     function renderClock() {
-      const vn = getVNTime();
-      const h = vn.getHours();
-      const m = vn.getMinutes();
-      const s = vn.getSeconds();
-      const ms = vn.getMilliseconds();
+      const vn = getCustomVNTime();
+      const h = vn.hours;
+      const m = vn.minutes;
+      const s = vn.seconds;
+      const ms = vn.ms;
 
       const hh = pad2(h);
       const mm = pad2(m);
@@ -511,8 +538,8 @@
         colonEl.classList.remove('is-hidden');
       }
 
-      weekdayEl.textContent = WEEKDAYS_VI[vn.getDay()];
-      dateEl.textContent = `${pad2(vn.getDate())}/${pad2(vn.getMonth() + 1)}/${vn.getFullYear()}`;
+      weekdayEl.textContent = WEEKDAYS_VI[vn.day];
+      dateEl.textContent = vn.dateStr;
 
       const secDeg = (s + ms / 1000) * 6;
       const minDeg = (m + s / 60) * 6;
